@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг»
 
 * Студент: [Яна Кутовая](https://up.htmlacademy.ru/javascript/25/user/1855563).
-* Наставник: `Неизвестно`.
+* Наставник: [Алексей Хабиров] (https://htmlacademy.ru/profile/alex_khab).
 
 ---
 
