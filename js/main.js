@@ -1,7 +1,6 @@
 const getRandomNumber = (min, max) => {
   if (min < 0 || max < 0) {
-    console.log('ошибка, число меньше 0');
-    return 0;
+    throw new Error('ошибка, число меньше 0');
   }
 
   if (max <= min) {
@@ -9,7 +8,7 @@ const getRandomNumber = (min, max) => {
   }
 
   return Math.round(Math.random() * (max - min) + min);
-}
+};
 
 getRandomNumber(8, 12);
 
@@ -24,6 +23,6 @@ const getRandomFloat = (min, max, c = 1) => {
 
   const num = Math.random() * (max - min) + min;
   return Number(num.toFixed(c));
-}
+};
 
-getRandomNumber(1, 6);
+getRandomFloat(1, 6);
