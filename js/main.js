@@ -1,4 +1,6 @@
 import { ads } from './data.js';
+import {createCard} from './offer.js';
 
-console.log(ads);
+
+createCard(ads[4]);
 
