@@ -7,8 +7,6 @@ const TYPES = {
 };
 
 const createCard = (ad) => {
-console.log(ad);
-
   const mapCanvas = document.querySelector('#map-canvas');
   const cardFragment = document.createDocumentFragment();
 
