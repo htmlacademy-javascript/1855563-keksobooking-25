@@ -1,3 +1,5 @@
+import {getNoun} from './util.js';
+
 const TYPES = {
   flat: 'Квартира',
   bungalow: 'Бунгало',
@@ -6,52 +8,10 @@ const TYPES = {
   hotel: 'Отель'
 };
 
-const createCard = (ad) => {
-  const mapCanvas = document.querySelector('#map-canvas');
-  const cardFragment = document.createDocumentFragment();
+const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
 
-  const cardTemplate = document.querySelector('#card').content;
-  const cardElement = cardTemplate.cloneNode(true);
-
-  const popup = cardTemplate.querySelector('.popup');
-
-  cardElement.querySelector('.popup__title').textContent = ad.offer.title;
-
-  cardElement.querySelector('.popup__text--address').textContent = ad.offer.address;
-
-  cardElement.querySelector('.popup__text--price').textContent = `${ad.offer.price} ₽/ночь`;
-
-  cardElement.querySelector('.popup__text--capacity').textContent = `${ad.offer.rooms} комнаты для ${ad.offer.guests} гостей`;
-
-  cardElement.querySelector('.popup__text--time').textContent = `Заезд после ${ad.offer.checkin}, выезд до ${ad.offer.checkout}`;
-
-  cardElement.querySelector('.popup__description').textContent = ad.offer.description;
-
-  cardElement.querySelector('.popup__type').textContent = TYPES[ad.offer.type];
-
-
-  const featureContainer = cardElement.querySelector('.popup__features');
-  const featureList = featureContainer.querySelectorAll('.popup__feature');
-  const adFeatures = ad.offer.features;
-
-  featureList.forEach((featureListItem) => {
-    const isNecessary = adFeatures.some(
-      (feature) => featureListItem.classList.contains('popup__feature--' + feature),
-    );
-
-    if(!isNecessary) {
-      featureListItem.remove();
-    }
-  });
-
-
-
-  const adImg = ad.offer.photos;
-  const imgContainer = cardElement.querySelector('.popup__photos');
-
-  imgContainer.innerHTML = '';
-
-  adImg.forEach((img) => {
+const allPhotos = (block, photos) => {
+  photos.forEach((img) => {
     const imgListItem = document.createElement('img');
 
     imgListItem.classList.add('popup__photo');
@@ -60,14 +20,54 @@ const createCard = (ad) => {
     imgListItem.alt = 'Фотография жилья';
     imgListItem.src = img;
 
-    imgContainer.append(imgListItem)
+    block.append(imgListItem);
   });
+};
 
+const allFeatures = (block, features) => {
+  features.forEach((feature) => {
+    const featureListItem = document.createElement('li');
+    featureListItem.classList.add('popup__feature');
+    featureListItem.classList.add(`popup__feature--${feature}`);
+
+    block.append(featureListItem);
+  });
+};
+
+
+const createCard = (ad) => {
+  const roomsDec = getNoun(ad.offer.rooms, 'комната', 'комнаты', 'комнат');
+  const guestDec = getNoun(ad.offer.guests, 'гостя', 'гостей', 'гостей');
+
+  const cardElement = cardTemplate.cloneNode(true);
+
+  cardElement.querySelector('.popup__title').textContent = ad.offer.title;
+  cardElement.querySelector('.popup__text--address').textContent = ad.offer.address;
+  cardElement.querySelector('.popup__text--price').textContent = `${ad.offer.price} ₽/ночь`;
+  cardElement.querySelector('.popup__text--capacity').textContent = `${ad.offer.rooms} ${roomsDec} для ${ad.offer.guests} ${guestDec}`;
+  cardElement.querySelector('.popup__text--time').textContent = `Заезд после ${ad.offer.checkin}, выезд до ${ad.offer.checkout}`;
+  cardElement.querySelector('.popup__description').textContent = ad.offer.description;
+  cardElement.querySelector('.popup__type').textContent = TYPES[ad.offer.type];
   cardElement.querySelector('.popup__avatar').src = ad.author.avatar;
 
+  const imgContainer = cardElement.querySelector('.popup__photos');
+  const featureContainer = cardElement.querySelector('.popup__features');
 
-  cardFragment.appendChild(cardElement);
-  mapCanvas.appendChild(cardFragment);
+  if (ad.offer.features.length > 0) {
+    featureContainer.innerHTML = '';
+    allFeatures(featureContainer, ad.offer.features);
+  } else {
+    featureContainer.remove();
+  }
+
+  if (ad.offer.photos.length > 0) {
+    imgContainer.innerHTML = '';
+    allPhotos(imgContainer, ad.offer.photos);
+  } else {
+    imgContainer.remove();
+  }
+
+  return cardElement;
 
 };
 

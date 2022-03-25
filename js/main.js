@@ -2,6 +2,10 @@ import { ads } from './data.js';
 import {createCard} from './offer.js';
 import {switchFormState} from './form.js';
 
+const mapCanvas = document.querySelector('#map-canvas');
+
+const card = createCard(ads[4]);
+
 switchFormState(false);
-createCard(ads[4]);
+mapCanvas.appendChild(card);
 

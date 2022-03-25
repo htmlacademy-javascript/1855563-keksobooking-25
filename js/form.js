@@ -24,8 +24,6 @@ const switchFormState = (isDisabled) => {
 
   const mapFeatures = mapFilters.querySelector('.map__filter');
   mapFeatures.disabled = isDisabled;
-}
-
-
+};
 
 export {switchFormState};

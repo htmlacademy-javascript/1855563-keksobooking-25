@@ -74,7 +74,7 @@ const LNG_MIN = 139.70000;
 
 const LNG_MAX = 139.80000;
 
-const createAd = (index) => {
+const createAd = () => {
   const location = {
     lat: getRandomFloat(LAT_MIN, LAT_MAX, 5),
     lng: getRandomFloat(LNG_MIN, LNG_MAX, 5)
