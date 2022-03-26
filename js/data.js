@@ -74,13 +74,14 @@ const LNG_MIN = 139.70000;
 
 const LNG_MAX = 139.80000;
 
-const createAd = (index) => {
+const createAd = () => {
   const location = {
     lat: getRandomFloat(LAT_MIN, LAT_MAX, 5),
     lng: getRandomFloat(LNG_MIN, LNG_MAX, 5)
   };
 
-  const avatarNumber = index < MAX_AVATAR_NUMBER ? `0${index}` : index;
+  const avatarRandomNumber = getRandomNumber(1, 11);
+  const avatarNumber = avatarRandomNumber < MAX_AVATAR_NUMBER ? `0${avatarRandomNumber}` : avatarRandomNumber;
 
   return {
     author: {
