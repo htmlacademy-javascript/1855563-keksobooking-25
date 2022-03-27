@@ -6,6 +6,6 @@ const mapCanvas = document.querySelector('#map-canvas');
 
 const card = createCard(ads[4]);
 
-switchFormState(false);
+switchFormState(true);
 mapCanvas.appendChild(card);
 

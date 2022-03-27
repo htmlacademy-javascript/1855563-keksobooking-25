@@ -1,5 +1,17 @@
 import {getNoun} from './util.js';
 
+const ROOMS = [
+  'комната',
+  'комнаты',
+  'комнат'
+];
+
+const GUESTS = [
+  'гостя',
+  'гостей',
+  'гостей'
+];
+
 const TYPES = {
   flat: 'Квартира',
   bungalow: 'Бунгало',
@@ -10,7 +22,7 @@ const TYPES = {
 
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
 
-const allPhotos = (block, photos) => {
+const createPhotos = (block, photos) => {
   photos.forEach((img) => {
     const imgListItem = document.createElement('img');
 
@@ -24,7 +36,7 @@ const allPhotos = (block, photos) => {
   });
 };
 
-const allFeatures = (block, features) => {
+const createFeatures = (block, features) => {
   features.forEach((feature) => {
     const featureListItem = document.createElement('li');
     featureListItem.classList.add('popup__feature');
@@ -36,8 +48,8 @@ const allFeatures = (block, features) => {
 
 
 const createCard = (ad) => {
-  const roomsDec = getNoun(ad.offer.rooms, 'комната', 'комнаты', 'комнат');
-  const guestDec = getNoun(ad.offer.guests, 'гостя', 'гостей', 'гостей');
+  const roomsDec = getNoun(ad.offer.rooms, ...ROOMS);
+  const guestDec = getNoun(ad.offer.guests, ...GUESTS);
 
   const cardElement = cardTemplate.cloneNode(true);
 
@@ -55,14 +67,14 @@ const createCard = (ad) => {
 
   if (ad.offer.features.length > 0) {
     featureContainer.innerHTML = '';
-    allFeatures(featureContainer, ad.offer.features);
+    createFeatures(featureContainer, ad.offer.features);
   } else {
     featureContainer.remove();
   }
 
   if (ad.offer.photos.length > 0) {
     imgContainer.innerHTML = '';
-    allPhotos(imgContainer, ad.offer.photos);
+    createPhotos(imgContainer, ad.offer.photos);
   } else {
     imgContainer.remove();
   }
