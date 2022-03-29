@@ -11,9 +11,8 @@ const pristine = new Pristine(orderForm, {
 
 //валидация поля "Заголовок объявления"
 
-const validateTitle = (value) => {
-  return value.length >= 30 && value.length <= 100;
-}
+const validateTitle = (value) =>  value.length >= 30 && value.length <= 100;
+
 
 pristine.addValidator(
   orderForm.querySelector('#title'),
@@ -23,9 +22,8 @@ pristine.addValidator(
 
 //Валидация поля "цена за ночь"
 
-const validatePrice = (value) => {
-  return value >= 1 && value <= 100000;
-}
+const validatePrice = (value) =>  value >= 1 && value <= 100000;
+
 
 pristine.addValidator(
   orderForm.querySelector('#price'),
@@ -34,11 +32,6 @@ pristine.addValidator(
 );
 
 //валидация полей "кол-во комнат" и "кол-во мест"
-
-// 1 комната — «для 1 гостя»;
-// 2 комнаты — «для 2 гостей» или «для 1 гостя»;
-// 3 комнаты — «3 комнаты», «для 2 гостей» или «для 1 гостя»;
-// 100 комнат — «не для гостей».
 
 const roomsField = orderForm.querySelector('[name="rooms"]');
 const capacityField = orderForm.querySelector('[name="capacity"]');
@@ -49,15 +42,9 @@ const roomsOption = {
   '100': ['0']
 };
 
-const validateRooms = () => {
-  return roomsOption[roomsField.value].includes(capacityField.value);
-}
+const validateRooms = () => roomsOption[roomsField.value].includes(capacityField.value);
 
-const getRoomsErrorMessage = () => {
-  return 'Выбор комнаты невозможен';
-}
-
-console.log(getRoomsErrorMessage());
+const getRoomsErrorMessage = () => 'Выбор комнаты невозможен';
 
 pristine.addValidator(roomsField, validateRooms, getRoomsErrorMessage);
 pristine.addValidator(capacityField, validateRooms, getRoomsErrorMessage);
