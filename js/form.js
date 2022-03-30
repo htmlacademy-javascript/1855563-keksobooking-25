@@ -13,8 +13,8 @@ const switchFormState = (isDisabled) => {
     mapFilters.classList.remove('map__filters--disabled');
   }
 
-  formElements.forEach((fieldsetItem) => {
-    fieldsetItem.disabled = isDisabled;
+  formElements.forEach((item) => {
+    item.disabled = isDisabled;
   });
 
   filterElements.forEach((selects) => {
