@@ -50,13 +50,13 @@ const addValidators = (pristine) => {
 const onFormSubmit = (evt, pristine) => {
   evt.preventDefault();
   pristine.validate();
-}
+};
 
-const initValidation = () => {
+function initValidation() {
   const pristine = createPristineInstance();
 
   addValidators(pristine);
   orderForm.addEventListener('submit', (evt) => onFormSubmit(evt, pristine));
-};
+}
 
-export {initValidation}
+export {initValidation};
