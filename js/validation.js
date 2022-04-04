@@ -5,6 +5,18 @@ const MAX_PRICE = 100000;
 const orderForm = document.querySelector('.ad-form');
 const roomsField = orderForm.querySelector('[name="rooms"]');
 const capacityField = orderForm.querySelector('[name="capacity"]');
+const priceField = orderForm.querySelector('#price');
+const typeHousing = orderForm.querySelector('#type');
+const timeIn = orderForm.querySelector('#timein');
+const timeOut = orderForm.querySelector('#timeout');
+
+const minPrice = {
+  'bungalow': 0,
+  'flat': 1000,
+  'hotel': 3000,
+  'house': 5000,
+  'palace': 10000
+};
 
 const roomsOption = {
   1: ['1'],
@@ -20,43 +32,67 @@ const createPristineInstance = () => new Pristine(orderForm, {
   errorTextParent: 'ad-form__element',
   errorTextTag: 'span',
   errorTextClass: 'ad-form__error'
-}, false);
+});
 
 const validateTitle = (value) =>  value.length >= MIN_SYMBOLS && value.length <= MAX_SYMBOLS;
 
-const validatePrice = (value) =>  value >= 1 && value <= MAX_PRICE;
+const validatePrice = (value) =>  value <= MAX_PRICE;
 
 const validateRooms = () => roomsOption[roomsField.value].includes(capacityField.value);
 const getRoomsErrorMessage = () => 'Выбор комнаты невозможен';
+
+const validatePriceField = () => minPrice[typeHousing.value] <= priceField.value;
+const getPriceErrorMessage = () => `Не менее ${minPrice[typeHousing.value]} руб. за ночь`;
 
 const addValidators = (pristine) => {
   pristine.addValidator(
     orderForm.querySelector('#title'),
     validateTitle,
-    'От 30 до 100 символов'
+    `От ${MIN_SYMBOLS} до ${MAX_SYMBOLS} символов`
   );
 
 
   pristine.addValidator(
-    orderForm.querySelector('#price'),
+    priceField,
     validatePrice,
-    'Не более 100 000 руб.'
+    `Не более ${MAX_PRICE} руб.`
   );
 
   pristine.addValidator(roomsField, validateRooms, getRoomsErrorMessage);
   pristine.addValidator(capacityField, validateRooms, getRoomsErrorMessage);
+  pristine.addValidator(priceField, validatePriceField, getPriceErrorMessage);
 };
+
 
 const onFormSubmit = (evt, pristine) => {
   evt.preventDefault();
   pristine.validate();
 };
 
-function initValidation() {
+const setFormTime = (fromSelect, toSelect) => {
+  toSelect.value = fromSelect.value;
+};
+
+const initValidation = () => {
   const pristine = createPristineInstance();
 
   addValidators(pristine);
+  pristine.validate(priceField);
+
+  typeHousing.addEventListener('change', () => {
+    pristine.validate(priceField);
+  });
+
+  timeIn.addEventListener('change', () => {
+    setFormTime(timeIn, timeOut);
+  });
+
+  timeOut.addEventListener('change', (evt) => {
+    evt.preventDefault();
+    setFormTime(timeOut, timeIn);
+  });
+
   orderForm.addEventListener('submit', (evt) => onFormSubmit(evt, pristine));
-}
+};
 
 export {initValidation};
