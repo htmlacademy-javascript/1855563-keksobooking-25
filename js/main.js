@@ -1,13 +1,23 @@
 import { ads } from './data.js';
 import {createCard} from './offer.js';
-import {switchFormState} from './form.js';
+import {switchFormState, getCoordinates} from './form.js';
 import {initValidation} from './validation.js';
+import {initPinMarker, initMap, createAddMarkers} from './map.js';
+import {createSlider} from './slider.js';
 
-const mapCanvas = document.querySelector('#map-canvas');
+const INIT_MAP_COORDINATES = {
+  lat: 35.681729,
+  lng: 139.753927,
+};
 
-const card = createCard(ads[4]);
+switchFormState(true);
+initMap(switchFormState, INIT_MAP_COORDINATES);
 
-switchFormState(false);
-mapCanvas.appendChild(card);
+initPinMarker(getCoordinates, INIT_MAP_COORDINATES);
+
+createAddMarkers(ads, createCard);
+
+createSlider();
 
 initValidation();
+
