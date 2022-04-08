@@ -17,9 +17,7 @@ const createSlider = () => {
         }
         return value.toFixed(0);
       },
-      from: (value) => {
-        return parseFloat(value);
-      },
+      from: (value) =>  parseFloat(value),
     },
   });
 
