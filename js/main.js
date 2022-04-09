@@ -1,13 +1,13 @@
-import { ads } from './data.js';
-import {createCard} from './offer.js';
 import {switchFormState} from './form.js';
 import {initValidation} from './validation.js';
+import {initMap} from './map.js';
+import {createSlider} from './slider.js';
 
-const mapCanvas = document.querySelector('#map-canvas');
+switchFormState(true);
 
-const card = createCard(ads[4]);
+initMap();
 
-switchFormState(false);
-mapCanvas.appendChild(card);
+createSlider();
 
 initValidation();
+

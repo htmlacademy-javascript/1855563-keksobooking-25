@@ -1,5 +1,6 @@
 const form = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
+const addressField = document.querySelector('#address');
 
 const switchFormState = (isDisabled) => {
   const formElements = form.querySelectorAll('fieldset');
@@ -22,4 +23,10 @@ const switchFormState = (isDisabled) => {
   });
 };
 
-export {switchFormState};
+const getCoordinates = (coordinates) => {
+
+  addressField.value = `${Number(coordinates.lat.toFixed(5))}, ${Number(coordinates.lng.toFixed(5))}`;
+};
+
+
+export {switchFormState, getCoordinates};
