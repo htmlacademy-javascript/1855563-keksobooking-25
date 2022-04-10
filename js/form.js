@@ -33,13 +33,13 @@ const getCoordinates = (coordinates) => {
 
 const clearForm = () => {
   form.reset();
-}
+};
 
 const resetPage = () => {
   clearForm();
   resetSlider();
   resetMap();
-}
+};
 
 resetButton.addEventListener('click', (evt) => {
   evt.preventDefault();
