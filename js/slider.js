@@ -26,4 +26,8 @@ const createSlider = () => {
   });
 };
 
-export {createSlider};
+const resetSlider = () => {
+  sliderElement.noUiSlider.reset();
+};
+
+export {createSlider, resetSlider};

@@ -1,6 +1,10 @@
+import {resetSlider} from './slider.js';
+import {resetMap} from './map.js';
+
 const form = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
 const addressField = document.querySelector('#address');
+const resetButton = document.querySelector('.ad-form__reset');
 
 const switchFormState = (isDisabled) => {
   const formElements = form.querySelectorAll('fieldset');
@@ -24,9 +28,22 @@ const switchFormState = (isDisabled) => {
 };
 
 const getCoordinates = (coordinates) => {
-
   addressField.value = `${Number(coordinates.lat.toFixed(5))}, ${Number(coordinates.lng.toFixed(5))}`;
 };
 
+const clearForm = () => {
+  form.reset();
+}
 
-export {switchFormState, getCoordinates};
+const resetPage = () => {
+  clearForm();
+  resetSlider();
+  resetMap();
+}
+
+resetButton.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  resetPage();
+});
+
+export {switchFormState, getCoordinates, resetPage};

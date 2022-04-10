@@ -1,3 +1,7 @@
+import {showSuccessMessage, showErrorMessage} from './user_modal.js';
+import {resetPage} from './form.js';
+import {sendData} from './api.js';
+
 const MIN_SYMBOLS = 30;
 const MAX_SYMBOLS = 100;
 const MAX_PRICE = 100000;
@@ -66,7 +70,11 @@ const addValidators = (pristine) => {
 
 const onFormSubmit = (evt, pristine) => {
   evt.preventDefault();
-  pristine.validate();
+  const isValid = pristine.validate();
+  if (isValid) {
+    const formData = new FormData(evt.target);
+    sendData(showSuccessMessage, showErrorMessage, formData, resetPage);
+  }
 };
 
 const setFormTime = (fromSelect, toSelect) => {
