@@ -8,19 +8,26 @@ const resetButton = document.querySelector('.ad-form__reset');
 
 const switchFormState = (isDisabled) => {
   const formElements = form.querySelectorAll('fieldset');
-  const filterElements = mapFilters.querySelectorAll('select, fieldset');
 
   if (isDisabled) {
     form.classList.add('ad-form--disabled');
-    mapFilters.classList.add('map__filters--disabled');
   } else {
     form.classList.remove('ad-form--disabled');
-    mapFilters.classList.remove('map__filters--disabled');
   }
 
   formElements.forEach((item) => {
     item.disabled = isDisabled;
   });
+};
+
+const switchFilterState = (isDisabled) => {
+  const filterElements = mapFilters.querySelectorAll('select, fieldset');
+
+  if (isDisabled) {
+    mapFilters.classList.add('map__filters--disabled');
+  } else {
+    mapFilters.classList.remove('map__filters--disabled');
+  }
 
   filterElements.forEach((selects) => {
     selects.disabled = isDisabled;
@@ -46,4 +53,4 @@ resetButton.addEventListener('click', (evt) => {
   resetPage();
 });
 
-export {switchFormState, getCoordinates, resetPage};
+export {switchFormState, getCoordinates, resetPage, switchFilterState};

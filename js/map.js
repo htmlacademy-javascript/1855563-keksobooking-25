@@ -64,10 +64,14 @@ const resetMap = () => {
   getCoordinates(INIT_MAP_COORDINATES);
 };
 
-const initMap = (ads) => {
+const resetMarker = () => {
+  layerGroup.clearLayers();
+};
+
+const initMap = (cb) => {
   map.on('load', () => {
     switchFormState(false);
-    renderAddMarkers(ads);
+    cb();
   })
     .setView(INIT_MAP_COORDINATES, ZOOM_MAP);
 
@@ -81,4 +85,4 @@ const initMap = (ads) => {
   createPinMarker();
 };
 
-export {initMap, resetMap};
+export {initMap, resetMap, renderAddMarkers, resetMarker};

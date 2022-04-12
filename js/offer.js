@@ -46,7 +46,6 @@ const createFeatures = (block, features) => {
   });
 };
 
-
 const renderSimilarCard = (similarAds) => {
   const {author, offer} = similarAds;
   const {avatar} = author;

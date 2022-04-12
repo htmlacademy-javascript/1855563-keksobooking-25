@@ -1,12 +1,29 @@
-import {switchFormState} from './form.js';
+import {switchFormState, switchFilterState} from './form.js';
 import {initValidation} from './validation.js';
-import {initMap} from './map.js';
+import {initMap, renderAddMarkers} from './map.js';
 import {createSlider} from './slider.js';
 import {getData} from './api.js';
+import {initLoadPhoto} from './photos.js';
+import {showAlert} from './user-modal.js';
+import {sortAds} from './sort.js';
+import {debounce} from './util.js';
 
-getData(initMap);
+const RERENDER_DELAY = 500;
+
+const onLoadSuccess = (ads) => {
+  sortAds(ads, debounce(renderAddMarkers, RERENDER_DELAY));
+  switchFilterState(false);
+  initLoadPhoto();
+};
+
+const onLoadError = () => {
+  showAlert('Возникла ошибка при загрузке объявлений!');
+};
 
 switchFormState(true);
+switchFilterState(true);
+
+initMap(() => getData(onLoadSuccess, onLoadError));
 
 createSlider();
 

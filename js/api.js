@@ -1,22 +1,20 @@
-const SIMILAR_ADS_COUNT = 10;
+const API_URL = 'https://25.javascript.pages.academy/keksobooking';
 
-const getData = (initMap) => {
-  fetch('https://25.javascript.pages.academy/keksobooking/data')
+const getData = (onSuccess, onFail) => {
+  fetch(`${API_URL}/data`)
     .then((response) => response.json())
-    .then((ads) => {
-      initMap(ads.slice(0, SIMILAR_ADS_COUNT));
-    });
+    .then((ads) => onSuccess(ads))
+    .catch(() => onFail());
 };
 
-const sendData = (onSuccess, onFail, body, resetPage) => {
+const sendData = (onSuccess, onFail, body) => {
   fetch(
-    'https://25.javascript.pages.academy/keksobooking',
+    API_URL,
     {
       method: 'POST',
       body,
     },
   ).then(() => {
-    resetPage();
     onSuccess();
   }).catch(() => {
     onFail();

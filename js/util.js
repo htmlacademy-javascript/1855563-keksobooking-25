@@ -39,5 +39,13 @@ const getNoun = (number, one, two, five) => {
   return five;
 };
 
+const debounce = (callback, timeoutDelay = 500) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
 
-export {getRandomNumber, getRandomFloat, getNoun};
+
+export {getRandomNumber, getRandomFloat, getNoun, debounce};
