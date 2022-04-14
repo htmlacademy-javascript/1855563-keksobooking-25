@@ -7,7 +7,7 @@ const createSlider = () => {
       min: 0,
       max: 100000,
     },
-    start: 5000,
+    start: 1000,
     step: 1,
     connect: 'lower',
     format: {
@@ -26,4 +26,8 @@ const createSlider = () => {
   });
 };
 
-export {createSlider};
+const resetSlider = () => {
+  sliderElement.noUiSlider.reset();
+};
+
+export {createSlider, resetSlider};

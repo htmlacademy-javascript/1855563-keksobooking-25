@@ -1,3 +1,7 @@
+import {showSuccessMessage, showErrorMessage} from './user-modal.js';
+import {resetPage} from './form.js';
+import {sendData} from './api.js';
+
 const MIN_SYMBOLS = 30;
 const MAX_SYMBOLS = 100;
 const MAX_PRICE = 100000;
@@ -9,6 +13,7 @@ const priceField = orderForm.querySelector('#price');
 const typeHousing = orderForm.querySelector('#type');
 const timeIn = orderForm.querySelector('#timein');
 const timeOut = orderForm.querySelector('#timeout');
+const buttonSubmit = document.querySelector('.ad-form__submit');
 
 const minPrice = {
   'bungalow': 0,
@@ -23,6 +28,17 @@ const roomsOption = {
   2: ['2', '1'],
   3: ['3', '2', '1'],
   100: ['0']
+};
+
+
+const blockSubmitButton = () => {
+  buttonSubmit.disabled = true;
+  buttonSubmit.textContent = 'Отправляю...';
+};
+
+const unblockSubmitButton = () => {
+  buttonSubmit.disabled = false;
+  buttonSubmit.textContent = 'Отправить';
 };
 
 const createPristineInstance = () => new Pristine(orderForm, {
@@ -63,10 +79,20 @@ const addValidators = (pristine) => {
   pristine.addValidator(priceField, validatePriceField, getPriceErrorMessage);
 };
 
+const onSuccessMessage = () => {
+  showSuccessMessage();
+  resetPage();
+  unblockSubmitButton();
+};
 
 const onFormSubmit = (evt, pristine) => {
   evt.preventDefault();
-  pristine.validate();
+  const isValid = pristine.validate();
+  if (isValid) {
+    const formData = new FormData(evt.target);
+    blockSubmitButton();
+    sendData(onSuccessMessage, showErrorMessage, formData);
+  }
 };
 
 const setFormTime = (fromSelect, toSelect) => {

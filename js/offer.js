@@ -46,35 +46,38 @@ const createFeatures = (block, features) => {
   });
 };
 
+const renderSimilarCard = (similarAds) => {
+  const {author, offer} = similarAds;
+  const {avatar} = author;
+  const {title, address, price, rooms, guests, checkin, checkout, description, type, features, photos} = offer;
 
-const createCard = (ad) => {
-  const roomsDec = getNoun(ad.offer.rooms, ...ROOMS);
-  const guestDec = getNoun(ad.offer.guests, ...GUESTS);
+  const roomsDec = getNoun(rooms, ...ROOMS);
+  const guestDec = getNoun(guests, ...GUESTS);
 
   const cardElement = cardTemplate.cloneNode(true);
 
-  cardElement.querySelector('.popup__title').textContent = ad.offer.title;
-  cardElement.querySelector('.popup__text--address').textContent = ad.offer.address;
-  cardElement.querySelector('.popup__text--price').textContent = `${ad.offer.price} ₽/ночь`;
-  cardElement.querySelector('.popup__text--capacity').textContent = `${ad.offer.rooms} ${roomsDec} для ${ad.offer.guests} ${guestDec}`;
-  cardElement.querySelector('.popup__text--time').textContent = `Заезд после ${ad.offer.checkin}, выезд до ${ad.offer.checkout}`;
-  cardElement.querySelector('.popup__description').textContent = ad.offer.description;
-  cardElement.querySelector('.popup__type').textContent = TYPES[ad.offer.type];
-  cardElement.querySelector('.popup__avatar').src = ad.author.avatar;
+  cardElement.querySelector('.popup__title').textContent = title;
+  cardElement.querySelector('.popup__text--address').textContent = address;
+  cardElement.querySelector('.popup__text--price').textContent = `${price} ₽/ночь`;
+  cardElement.querySelector('.popup__text--capacity').textContent = `${rooms} ${roomsDec} для ${guests} ${guestDec}`;
+  cardElement.querySelector('.popup__text--time').textContent = `Заезд после ${checkin}, выезд до ${checkout}`;
+  cardElement.querySelector('.popup__description').textContent = description;
+  cardElement.querySelector('.popup__type').textContent = TYPES[type];
+  cardElement.querySelector('.popup__avatar').src = avatar;
 
   const imgContainer = cardElement.querySelector('.popup__photos');
   const featureContainer = cardElement.querySelector('.popup__features');
 
-  if (ad.offer.features.length > 0) {
+  if (features && features.length > 0) {
     featureContainer.innerHTML = '';
-    createFeatures(featureContainer, ad.offer.features);
+    createFeatures(featureContainer, features);
   } else {
     featureContainer.remove();
   }
 
-  if (ad.offer.photos.length > 0) {
+  if (photos && photos.length > 0) {
     imgContainer.innerHTML = '';
-    createPhotos(imgContainer, ad.offer.photos);
+    createPhotos(imgContainer, photos);
   } else {
     imgContainer.remove();
   }
@@ -84,4 +87,4 @@ const createCard = (ad) => {
 };
 
 
-export {createCard};
+export {renderSimilarCard};

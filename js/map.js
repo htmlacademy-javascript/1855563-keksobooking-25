@@ -1,6 +1,5 @@
 import {getCoordinates, switchFormState} from './form.js';
-import {ads} from './data.js';
-import {createCard} from './offer.js';
+import {renderSimilarCard} from './offer.js';
 
 const ZOOM_MAP = 10;
 const INIT_MAP_COORDINATES = {
@@ -17,6 +16,14 @@ const mainPinIcon = L.icon({
   iconSize: [52, 52],
   iconAnchor: [26, 52],
 });
+
+const mainPinMarker = L.marker(
+  INIT_MAP_COORDINATES,
+  {
+    draggable: true,
+    icon: mainPinIcon,
+  },
+);
 
 const addPinIcon = L.icon({
   iconUrl: './img/pin.svg',
@@ -37,19 +44,11 @@ const renderAddMarkers = (markers) => {
       icon: addPinIcon,
     });
 
-    marker.addTo(layerGroup).bindPopup(createCard(ad));
+    marker.addTo(layerGroup).bindPopup(renderSimilarCard(ad));
   });
 };
 
 const createPinMarker = () => {
-  const mainPinMarker = L.marker(
-    INIT_MAP_COORDINATES,
-    {
-      draggable: true,
-      icon: mainPinIcon,
-    },
-  );
-
   getCoordinates(INIT_MAP_COORDINATES);
 
   mainPinMarker.on('move', (evt) => {
@@ -59,10 +58,20 @@ const createPinMarker = () => {
   mainPinMarker.addTo(map);
 };
 
-const initMap = () => {
+const resetMap = () => {
+  mainPinMarker.setLatLng(INIT_MAP_COORDINATES);
+  map.setView(INIT_MAP_COORDINATES, ZOOM_MAP);
+  getCoordinates(INIT_MAP_COORDINATES);
+};
+
+const resetMarkers = () => {
+  layerGroup.clearLayers();
+};
+
+const initMap = (cb) => {
   map.on('load', () => {
     switchFormState(false);
-    renderAddMarkers(ads);
+    cb();
   })
     .setView(INIT_MAP_COORDINATES, ZOOM_MAP);
 
@@ -76,4 +85,4 @@ const initMap = () => {
   createPinMarker();
 };
 
-export {initMap};
+export {initMap, resetMap, renderAddMarkers, resetMarkers};
