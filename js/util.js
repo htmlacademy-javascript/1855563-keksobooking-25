@@ -1,4 +1,4 @@
-const RERENDER_DELAY = 5000;
+const RERENDER_DELAY = 500;
 
 const getNoun = (number, one, two, five) => {
   let n = Math.abs(number);

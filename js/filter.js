@@ -28,7 +28,9 @@ const housingGuestsSelect = formFilters.querySelector('#housing-guests');
 const housingFeaturesFieldset = formFilters.querySelector('#housing-features');
 const featureCheckbox = housingFeaturesFieldset.querySelectorAll('.map__checkbox');
 
-const filterByPrice = (offerPrice, selectPrice) => {
+const filterByPrice = (ad) => {
+  const offerPrice = Number(ad.offer.price);
+  const selectPrice = housingPriceSelect.value;
   switch (priceList[selectPrice]) {
     case priceList.high:
       return offerPrice <= priceList.high.max && offerPrice >= priceList.high.min;
@@ -41,33 +43,13 @@ const filterByPrice = (offerPrice, selectPrice) => {
   }
 };
 
-const getAdsRank = (ad) => {
+const filterByType = (ad) => ad.offer.type === housingTypeSelect.value || housingTypeSelect.value === DEFAULT_VALUE;
+const filterByRooms = (ad) => ad.offer.rooms === Number(housingRoomsSelect.value) || housingRoomsSelect.value === DEFAULT_VALUE;
+const filterByGuests = (ad) => ad.offer.guests === Number(housingGuestsSelect.value) || housingGuestsSelect.value === DEFAULT_VALUE;
+
+
+const getbyFeature = (ad) => {
   const {offer} = ad;
-  let rank = 0;
-
-  if (offer.type === housingTypeSelect.value || housingTypeSelect.value === DEFAULT_VALUE) {
-    rank += 1;
-  } else {
-    return false;
-  }
-
-  if (filterByPrice(offer.price, housingPriceSelect.value) ) {
-    rank += 1;
-  } else {
-    return false;
-  }
-
-  if (offer.rooms === Number(housingRoomsSelect.value) || housingRoomsSelect.value === DEFAULT_VALUE) {
-    rank += 1;
-  } else {
-    return false;
-  }
-
-  if (offer.guests === Number(housingGuestsSelect.value) || housingGuestsSelect.value === DEFAULT_VALUE) {
-    rank += 1;
-  } else {
-    return false;
-  }
 
   let featuresCheckedCount = 0;
   let offerFeaturesCheckedCount = 0;
@@ -80,21 +62,19 @@ const getAdsRank = (ad) => {
   });
 
   if (featuresCheckedCount === offerFeaturesCheckedCount) {
-    rank += 1;
+    return true;
   }
-
-  return rank === 5;
 };
 
 const onFilterFormChange = (ads, rerenderMarkers, isAfterReset = false) => {
   resetMarkers();
-  const filteredAds = ads.filter((ad) => isAfterReset ? true : getAdsRank(ad)).slice(0, SIMILAR_ADS_COUNT);
-  rerenderMarkers(filteredAds);
+  const filteredAds = isAfterReset ? ads : ads.filter((ad) => filterByType(ad) && filterByRooms(ad) && filterByGuests(ad) && filterByPrice(ad) && getbyFeature(ad));
+  rerenderMarkers(filteredAds.slice(0, SIMILAR_ADS_COUNT));
 };
 
 const setFilterListener = (ads, cb) => {
-  formFilters.addEventListener('change', () => debounce(onFilterFormChange(ads, cb)));
-  formFilters.addEventListener('reset', () => onFilterFormChange(ads, cb, true));
+  formFilters.addEventListener('change', debounce( () => onFilterFormChange(ads, cb)));
+  formFilters.addEventListener('reset', debounce( () => onFilterFormChange(ads, cb, true)));
 };
 
 export {setFilterListener};

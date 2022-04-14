@@ -7,8 +7,10 @@ import {initLoadPhoto} from './photos.js';
 import {showAlert} from './user-modal.js';
 import {setFilterListener} from './filter.js';
 
+const COUND_ADS = 10;
+
 const onLoadSuccess = (ads) => {
-  renderAddMarkers(ads.slice(0, 10));
+  renderAddMarkers(ads.slice(0, COUND_ADS));
   setFilterListener(ads, renderAddMarkers);
   switchFilterState(false);
   initLoadPhoto();
