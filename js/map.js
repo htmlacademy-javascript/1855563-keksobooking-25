@@ -64,7 +64,7 @@ const resetMap = () => {
   getCoordinates(INIT_MAP_COORDINATES);
 };
 
-const resetMarker = () => {
+const resetMarkers = () => {
   layerGroup.clearLayers();
 };
 
@@ -85,4 +85,4 @@ const initMap = (cb) => {
   createPinMarker();
 };
 
-export {initMap, resetMap, renderAddMarkers, resetMarker};
+export {initMap, resetMap, renderAddMarkers, resetMarkers};

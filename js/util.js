@@ -1,27 +1,4 @@
-const getRandomNumber = (min, max) => {
-  if (min < 0 || max < 0) {
-    throw new Error('ошибка, число меньше 0');
-  }
-
-  if (max <= min) {
-    throw new Error('ошибка, число "до" меньше или равно числу "от"');
-  }
-
-  return Math.round(Math.random() * (max - min) + min);
-};
-
-const getRandomFloat = (min, max, c = 1) => {
-  if (min < 0 || max < 0) {
-    throw new Error('ошибка, число меньше 0');
-  }
-
-  if (max <= min) {
-    throw new Error('ошибка, число "до" меньше или равно числу "от"');
-  }
-
-  const num = Math.random() * (max - min) + min;
-  return Number(num.toFixed(c));
-};
+const RERENDER_DELAY = 5000;
 
 const getNoun = (number, one, two, five) => {
   let n = Math.abs(number);
@@ -39,7 +16,7 @@ const getNoun = (number, one, two, five) => {
   return five;
 };
 
-const debounce = (callback, timeoutDelay = 500) => {
+const debounce = (callback, timeoutDelay = RERENDER_DELAY) => {
   let timeoutId;
   return (...rest) => {
     clearTimeout(timeoutId);
@@ -48,4 +25,4 @@ const debounce = (callback, timeoutDelay = 500) => {
 };
 
 
-export {getRandomNumber, getRandomFloat, getNoun, debounce};
+export {getNoun, debounce};

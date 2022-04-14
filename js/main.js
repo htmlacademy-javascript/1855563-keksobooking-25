@@ -5,13 +5,11 @@ import {createSlider} from './slider.js';
 import {getData} from './api.js';
 import {initLoadPhoto} from './photos.js';
 import {showAlert} from './user-modal.js';
-import {sortAds} from './sort.js';
-import {debounce} from './util.js';
-
-const RERENDER_DELAY = 500;
+import {setFilterListener} from './filter.js';
 
 const onLoadSuccess = (ads) => {
-  sortAds(ads, debounce(renderAddMarkers, RERENDER_DELAY));
+  renderAddMarkers(ads.slice(0, 10));
+  setFilterListener(ads, renderAddMarkers);
   switchFilterState(false);
   initLoadPhoto();
 };

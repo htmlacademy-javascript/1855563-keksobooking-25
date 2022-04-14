@@ -1,5 +1,6 @@
 import {resetSlider} from './slider.js';
 import {resetMap} from './map.js';
+import {resetPhotos} from './photos.js';
 
 const form = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
@@ -40,12 +41,14 @@ const getCoordinates = (coordinates) => {
 
 const clearForm = () => {
   form.reset();
+  mapFilters.reset();
 };
 
 const resetPage = () => {
   clearForm();
   resetSlider();
   resetMap();
+  resetPhotos();
 };
 
 resetButton.addEventListener('click', (evt) => {
