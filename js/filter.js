@@ -48,7 +48,7 @@ const filterByRooms = (ad) => ad.offer.rooms === Number(housingRoomsSelect.value
 const filterByGuests = (ad) => ad.offer.guests === Number(housingGuestsSelect.value) || housingGuestsSelect.value === DEFAULT_VALUE;
 
 
-const getAdsRank = (ad) => {
+const getbyFeature = (ad) => {
   const {offer} = ad;
 
   let featuresCheckedCount = 0;
@@ -68,7 +68,7 @@ const getAdsRank = (ad) => {
 
 const onFilterFormChange = (ads, rerenderMarkers, isAfterReset = false) => {
   resetMarkers();
-  const filteredAds = isAfterReset ? ads : ads.filter((ad) => filterByType(ad) && filterByRooms(ad) && filterByGuests(ad) && filterByPrice(ad) && getAdsRank(ad));
+  const filteredAds = isAfterReset ? ads : ads.filter((ad) => filterByType(ad) && filterByRooms(ad) && filterByGuests(ad) && filterByPrice(ad) && getbyFeature(ad));
   rerenderMarkers(filteredAds.slice(0, SIMILAR_ADS_COUNT));
 };
 
