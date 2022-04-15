@@ -6,15 +6,20 @@ const INIT_MAP_COORDINATES = {
   lat: 35.681729,
   lng: 139.753927,
 };
+const MAIN_ICON_SIZE = [52, 52];
+const MAIN_ICON_ANCHOR = [26, 52];
+const MAIN_ADD_SIZE = [40, 40];
+const MAIN_ADD_ANCHOR = [20, 40];
 const LAYER = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const ATTRIBUTION_LAYER = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+
 const map = L.map('map-canvas');
 const layerGroup = L.layerGroup().addTo(map);
 
 const mainPinIcon = L.icon({
   iconUrl: './img/main-pin.svg',
-  iconSize: [52, 52],
-  iconAnchor: [26, 52],
+  iconSize: MAIN_ICON_SIZE,
+  iconAnchor: MAIN_ICON_ANCHOR,
 });
 
 const mainPinMarker = L.marker(
@@ -27,8 +32,8 @@ const mainPinMarker = L.marker(
 
 const addPinIcon = L.icon({
   iconUrl: './img/pin.svg',
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
+  iconSize: MAIN_ADD_SIZE,
+  iconAnchor: MAIN_ADD_ANCHOR,
 });
 
 const renderAddMarkers = (markers) => {

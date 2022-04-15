@@ -4,7 +4,7 @@ import {debounce} from './util.js';
 const SIMILAR_ADS_COUNT = 10;
 const DEFAULT_VALUE = 'any';
 
-const priceList = {
+const PRICE_LIST = {
   'any': 0,
   'low': {
     'min': 0,
@@ -31,14 +31,14 @@ const featureCheckbox = housingFeaturesFieldset.querySelectorAll('.map__checkbox
 const filterByPrice = (ad) => {
   const offerPrice = Number(ad.offer.price);
   const selectPrice = housingPriceSelect.value;
-  switch (priceList[selectPrice]) {
-    case priceList.high:
-      return offerPrice <= priceList.high.max && offerPrice >= priceList.high.min;
-    case priceList.middle:
-      return offerPrice <= priceList.middle.max && offerPrice >= priceList.middle.min;
-    case priceList.low:
-      return offerPrice <= priceList.low.max && offerPrice >= priceList.low.min;
-    case priceList.any:
+  switch (PRICE_LIST[selectPrice]) {
+    case PRICE_LIST.high:
+      return offerPrice <= PRICE_LIST.high.max && offerPrice >= PRICE_LIST.high.min;
+    case PRICE_LIST.middle:
+      return offerPrice <= PRICE_LIST.middle.max && offerPrice >= PRICE_LIST.middle.min;
+    case PRICE_LIST.low:
+      return offerPrice <= PRICE_LIST.low.max && offerPrice >= PRICE_LIST.low.min;
+    case PRICE_LIST.any:
       return true;
   }
 };
@@ -48,7 +48,7 @@ const filterByRooms = (ad) => ad.offer.rooms === Number(housingRoomsSelect.value
 const filterByGuests = (ad) => ad.offer.guests === Number(housingGuestsSelect.value) || housingGuestsSelect.value === DEFAULT_VALUE;
 
 
-const getbyFeature = (ad) => {
+const getByFeature = (ad) => {
   const {offer} = ad;
 
   let featuresCheckedCount = 0;
@@ -68,7 +68,7 @@ const getbyFeature = (ad) => {
 
 const onFilterFormChange = (ads, rerenderMarkers, isAfterReset = false) => {
   resetMarkers();
-  const filteredAds = isAfterReset ? ads : ads.filter((ad) => filterByType(ad) && filterByRooms(ad) && filterByGuests(ad) && filterByPrice(ad) && getbyFeature(ad));
+  const filteredAds = isAfterReset ? ads : ads.filter((ad) => filterByType(ad) && filterByRooms(ad) && filterByGuests(ad) && filterByPrice(ad) && getByFeature(ad));
   rerenderMarkers(filteredAds.slice(0, SIMILAR_ADS_COUNT));
 };
 
