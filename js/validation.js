@@ -5,6 +5,8 @@ import {sendData} from './api.js';
 const MIN_SYMBOLS = 30;
 const MAX_SYMBOLS = 100;
 const MAX_PRICE = 100000;
+const MIN_GUESTS = 0;
+const MAX_ROOMS = 100;
 
 const orderForm = document.querySelector('.ad-form');
 const roomsField = orderForm.querySelector('[name="rooms"]');
@@ -50,12 +52,35 @@ const createPristineInstance = () => new Pristine(orderForm, {
   errorTextClass: 'ad-form__error'
 });
 
+const getGuestsErrorMessage = () => {
+  const capacity = Number(capacityField.value);
+  const rooms = Number(roomsField.value);
+  if (capacity > rooms && capacity !== MIN_GUESTS && rooms !== MAX_ROOMS) {
+    return `Гостей больше количества комнат на ${capacity - rooms}`;
+  } else if (capacity === MIN_GUESTS && rooms !== MAX_ROOMS) {
+    return `"не для гостей" - ${MAX_ROOMS} комнат`;
+  } else if (rooms === MAX_ROOMS && capacity !== MIN_GUESTS) {
+    return `${MAX_ROOMS} комнат - "не для гостей"`;
+  }
+};
+
+const getRoomsErrorMessage = () => {
+  const capacity = Number(capacityField.value);
+  const rooms = Number(roomsField.value);
+  if (capacity > rooms && capacity !== 0 && rooms !== MAX_ROOMS) {
+    return `Количество комнат недостаточно для ${capacity} гостей`;
+  } else if (capacity === MIN_GUESTS && rooms !== MAX_ROOMS) {
+    return `"не для гостей" - ${MAX_ROOMS} комнат`;
+  } else if (rooms === MAX_ROOMS && capacity !== MIN_GUESTS) {
+    return `${MAX_ROOMS} комнат - "не для гостей"`;
+  }
+};
+
 const validateTitle = (value) =>  value.length >= MIN_SYMBOLS && value.length <= MAX_SYMBOLS;
 
 const validatePrice = (value) =>  value <= MAX_PRICE;
 
 const validateRooms = () => roomsOption[roomsField.value].includes(capacityField.value);
-const getRoomsErrorMessage = () => 'Выбор комнаты невозможен';
 
 const validatePriceField = () => minPrice[typeHousing.value] <= priceField.value;
 const getPriceErrorMessage = () => `Не менее ${minPrice[typeHousing.value]} руб. за ночь`;
@@ -75,7 +100,7 @@ const addValidators = (pristine) => {
   );
 
   pristine.addValidator(roomsField, validateRooms, getRoomsErrorMessage);
-  pristine.addValidator(capacityField, validateRooms, getRoomsErrorMessage);
+  pristine.addValidator(capacityField, validateRooms, getGuestsErrorMessage);
   pristine.addValidator(priceField, validatePriceField, getPriceErrorMessage);
 };
 
@@ -106,7 +131,17 @@ const initValidation = () => {
   pristine.validate(priceField);
 
   typeHousing.addEventListener('change', () => {
+    priceField.placeholder = minPrice[typeHousing.value];
+    priceField.value = minPrice[typeHousing.value];
     pristine.validate(priceField);
+  });
+
+  capacityField.addEventListener('change', () => {
+    pristine.validate(roomsField);
+  });
+
+  roomsField.addEventListener('change', () => {
+    pristine.validate(capacityField);
   });
 
   timeIn.addEventListener('change', () => {
