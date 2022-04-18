@@ -16,6 +16,7 @@ const typeHousing = orderForm.querySelector('#type');
 const timeIn = orderForm.querySelector('#timein');
 const timeOut = orderForm.querySelector('#timeout');
 const buttonSubmit = document.querySelector('.ad-form__submit');
+const sliderElement = document.querySelector('.ad-form__slider');
 
 const minPrice = {
   'bungalow': 0,
@@ -130,9 +131,24 @@ const initValidation = () => {
   addValidators(pristine);
   pristine.validate(priceField);
 
+  let isPriceTouched = false;
+
+  priceField.addEventListener('input', () => {
+    isPriceTouched = true;
+    sliderElement.noUiSlider.set(Number(priceField.value));
+  });
+
+  sliderElement.noUiSlider.on('slide', () => {
+    isPriceTouched = true;
+    priceField.value = sliderElement.noUiSlider.get();
+  });
+
   typeHousing.addEventListener('change', () => {
-    priceField.placeholder = minPrice[typeHousing.value];
-    priceField.value = minPrice[typeHousing.value];
+    if (!isPriceTouched) {
+      priceField.placeholder = minPrice[typeHousing.value];
+      priceField.value = minPrice[typeHousing.value];
+      sliderElement.noUiSlider.set(minPrice[typeHousing.value]);
+    }
     pristine.validate(priceField);
   });
 
