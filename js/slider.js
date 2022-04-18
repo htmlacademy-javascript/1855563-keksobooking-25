@@ -1,6 +1,4 @@
 const sliderElement = document.querySelector('.ad-form__slider');
-const valueElement = document.querySelector('#price');
-const typeHousing = document.querySelector('#type');
 
 const MIN_VALUE = 0;
 const MAX_VALUE = 100000;
@@ -26,18 +24,6 @@ const createSlider = () => {
       },
       from: (value) =>  parseFloat(value),
     },
-  });
-
-  sliderElement.noUiSlider.on('update', () => {
-    valueElement.value = sliderElement.noUiSlider.get();
-  });
-
-  valueElement.addEventListener('input', () => {
-    sliderElement.noUiSlider.set(Number(valueElement.value));
-  });
-
-  typeHousing.addEventListener('change', () => {
-    sliderElement.noUiSlider.set(Number(valueElement.value));
   });
 };
 

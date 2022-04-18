@@ -16,6 +16,7 @@ const typeHousing = orderForm.querySelector('#type');
 const timeIn = orderForm.querySelector('#timein');
 const timeOut = orderForm.querySelector('#timeout');
 const buttonSubmit = document.querySelector('.ad-form__submit');
+const sliderElement = document.querySelector('.ad-form__slider');
 
 const minPrice = {
   'bungalow': 0,
@@ -85,7 +86,9 @@ const validateRooms = () => roomsOption[roomsField.value].includes(capacityField
 const validatePriceField = () => minPrice[typeHousing.value] <= priceField.value;
 const getPriceErrorMessage = () => `Не менее ${minPrice[typeHousing.value]} руб. за ночь`;
 
-const addValidators = (pristine) => {
+const pristine = createPristineInstance();
+
+const addValidators = () => {
   pristine.addValidator(
     orderForm.querySelector('#title'),
     validateTitle,
@@ -104,13 +107,19 @@ const addValidators = (pristine) => {
   pristine.addValidator(priceField, validatePriceField, getPriceErrorMessage);
 };
 
+const resetValidation = () => {
+  priceField.placeholder = minPrice[typeHousing.value];
+  priceField.value = minPrice[typeHousing.value];
+  pristine.reset();
+};
+
 const onSuccessMessage = () => {
   showSuccessMessage();
   resetPage();
   unblockSubmitButton();
 };
 
-const onFormSubmit = (evt, pristine) => {
+const onFormSubmit = (evt) => {
   evt.preventDefault();
   const isValid = pristine.validate();
   if (isValid) {
@@ -125,14 +134,27 @@ const setFormTime = (fromSelect, toSelect) => {
 };
 
 const initValidation = () => {
-  const pristine = createPristineInstance();
-
   addValidators(pristine);
-  pristine.validate(priceField);
+
+  let isPriceTouched = false;
+
+  priceField.addEventListener('input', () => {
+    isPriceTouched = true;
+    sliderElement.noUiSlider.set(Number(priceField.value));
+  });
+
+  sliderElement.noUiSlider.on('slide', () => {
+    isPriceTouched = true;
+    priceField.value = sliderElement.noUiSlider.get();
+    pristine.validate(priceField);
+  });
 
   typeHousing.addEventListener('change', () => {
-    priceField.placeholder = minPrice[typeHousing.value];
-    priceField.value = minPrice[typeHousing.value];
+    if (!isPriceTouched) {
+      priceField.placeholder = minPrice[typeHousing.value];
+      priceField.value = minPrice[typeHousing.value];
+      sliderElement.noUiSlider.set(minPrice[typeHousing.value]);
+    }
     pristine.validate(priceField);
   });
 
@@ -153,7 +175,7 @@ const initValidation = () => {
     setFormTime(timeOut, timeIn);
   });
 
-  orderForm.addEventListener('submit', (evt) => onFormSubmit(evt, pristine));
+  orderForm.addEventListener('submit', (evt) => onFormSubmit(evt));
 };
 
-export {initValidation};
+export {initValidation, resetValidation};
