@@ -1,6 +1,7 @@
 import {resetSlider} from './slider.js';
 import {resetMap} from './map.js';
 import {resetPhotos} from './photos.js';
+import {resetValidation} from './validation.js';
 
 const form = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
@@ -46,6 +47,7 @@ const clearForm = () => {
 
 const resetPage = () => {
   clearForm();
+  resetValidation();
   resetSlider();
   resetMap();
   resetPhotos();

@@ -86,7 +86,9 @@ const validateRooms = () => roomsOption[roomsField.value].includes(capacityField
 const validatePriceField = () => minPrice[typeHousing.value] <= priceField.value;
 const getPriceErrorMessage = () => `Не менее ${minPrice[typeHousing.value]} руб. за ночь`;
 
-const addValidators = (pristine) => {
+const pristine = createPristineInstance();
+
+const addValidators = () => {
   pristine.addValidator(
     orderForm.querySelector('#title'),
     validateTitle,
@@ -105,13 +107,19 @@ const addValidators = (pristine) => {
   pristine.addValidator(priceField, validatePriceField, getPriceErrorMessage);
 };
 
+const resetValidation = () => {
+  priceField.placeholder = minPrice[typeHousing.value];
+  priceField.value = minPrice[typeHousing.value];
+  pristine.reset();
+};
+
 const onSuccessMessage = () => {
   showSuccessMessage();
   resetPage();
   unblockSubmitButton();
 };
 
-const onFormSubmit = (evt, pristine) => {
+const onFormSubmit = (evt) => {
   evt.preventDefault();
   const isValid = pristine.validate();
   if (isValid) {
@@ -126,10 +134,7 @@ const setFormTime = (fromSelect, toSelect) => {
 };
 
 const initValidation = () => {
-  const pristine = createPristineInstance();
-
   addValidators(pristine);
-  pristine.validate(priceField);
 
   let isPriceTouched = false;
 
@@ -141,6 +146,7 @@ const initValidation = () => {
   sliderElement.noUiSlider.on('slide', () => {
     isPriceTouched = true;
     priceField.value = sliderElement.noUiSlider.get();
+    pristine.validate(priceField);
   });
 
   typeHousing.addEventListener('change', () => {
@@ -169,7 +175,7 @@ const initValidation = () => {
     setFormTime(timeOut, timeIn);
   });
 
-  orderForm.addEventListener('submit', (evt) => onFormSubmit(evt, pristine));
+  orderForm.addEventListener('submit', (evt) => onFormSubmit(evt));
 };
 
-export {initValidation};
+export {initValidation, resetValidation};
